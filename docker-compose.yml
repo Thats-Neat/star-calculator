@@ -1,0 +1,12 @@
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    image: star-calculator
+    container_name: star-calculator
+    volumes:
+      - .:/home/workspace
+    working_dir: /home/workspace
+    stdin_open: true
+    tty: true
