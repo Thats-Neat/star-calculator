@@ -44,30 +44,43 @@ class Calculator():
 
         gmst = (24110.54841 + 8640184.812866 * T + 0.093104 * T*T - 6.2e-6 * T*T*T) / 3600.0
 
-        UT = time_data.hour + time_data.minute/60 + time_data.second/3600
-        gmst = gmst + 1.00273790935 * UT
-        gmst = gmst % 24
+        UT = time_data.hour + time_data.minute / 60 + time_data.second / 3600
+        gmst += 1.00273790935 * UT
+        gmst %= 24
 
         LST = gmst + self._location.get_long() / 15.0
-        LST = LST % 24
+        LST %= 24
 
-        return round((LST * 15) % 360, 2)
+        LST_degrees = LST * 15
+        return round(LST_degrees % 360, 4)
 
     def _calc_altitude(self):
-        lst = math.radians(self._calc_lst())
-        ra = math.radians(self._star.get_ra())
+        ha = (self._calc_lst() - self._star.get_ra())
+
+        ha = math.radians(ha)
         dec = math.radians(self._star.get_dec())
         lat = math.radians(self._location.get_lat())
-
-        ha = lst - ra
 
         sin_alt = math.sin(dec) * math.sin(lat) + math.cos(dec) * math.cos(lat) * math.cos(ha)
         alt = math.asin(sin_alt)
 
-        return math.degrees(alt)
+        return round(math.degrees(alt), 4)
 
     def _calc_azimuth(self):
-        return 0
+        ha = (self._calc_lst() - self._star.get_ra())
+
+        ha = math.radians(ha)
+        dec = math.radians(self._star.get_dec())
+        lat = math.radians(self._location.get_lat())
+        alt = math.radians(self.get_altitude())
+
+        cos_az = (math.sin(dec) - math.sin(alt) * math.sin(lat)) / (math.cos(alt) * math.cos(lat))
+        sin_az = (math.cos(dec) * math.sin(ha)) / math.cos(alt)
+
+        az_rad = math.atan2(sin_az, cos_az)
+        az_deg = (360 - math.degrees(az_rad)) % 360
+
+        return round(az_deg, 4)
 
     def get_altitude(self):
         return self._altitude

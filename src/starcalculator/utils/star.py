@@ -28,7 +28,7 @@ class Star():
 
         adjusted_ra = (ra + ra_pm_deg * years_since_epoch) % 360
 
-        return round(adjusted_ra, 2)
+        return round(adjusted_ra, 4)
 
 
     def _get_dec(self):
@@ -41,7 +41,7 @@ class Star():
 
         adjusted_dec = dec + dec_pm_deg * years_since_epoch
 
-        return round(adjusted_dec, 2)
+        return round(adjusted_dec, 4)
     
     def get_ra(self):
         return self._ra
