@@ -1,7 +1,7 @@
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-class TimeSwitch():
+class Time():
     def __init__(self, dt: datetime, tz_name: str):
         self._original_tz = tz_name
         self._local_dt = dt.replace(tzinfo=ZoneInfo(tz_name))

@@ -43,6 +43,15 @@ class Star():
 
         return round(adjusted_dec, 2)
     
+    def get_ra(self):
+        return self._ra
+
+    def get_dec(self):
+        return self._dec
+    
+    def get_name(self):
+        return self._name
+
     def __str__(self):
         return f"Star: {self._name.upper()}, RA: {self._ra}, DEC: {self._dec}"
     

@@ -1,9 +1,10 @@
 import argparse
 from datetime import datetime
 
-from starcalculator.utils.timecontrol import TimeSwitch
+from starcalculator.utils.time import Time
 from starcalculator.utils.star import Star
 from starcalculator.utils.location import Location
+from starcalculator.utils.calculator import Calculator
 
 def main():
     parser = argparse.ArgumentParser(description="Calculate the position of a star or stars")
@@ -24,10 +25,10 @@ def main():
 
 def basic_calculation(star_name: str, latitude: float, longitude: float):
     now_local = datetime.now()
-    time_object = TimeSwitch(dt=now_local, tz_name="UTC")
+    time_object = Time(dt=now_local, tz_name="UTC")
     location_object = Location(lat=latitude, long=longitude)
-
     star_object = Star(star_name=star_name, dt=time_object.get_utc())
+    calculator_object = Calculator(star=star_object, location=location_object, time=time_object)
 
-    print(star_object)
+    print(calculator_object)
 
