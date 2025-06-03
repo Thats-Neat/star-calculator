@@ -15,11 +15,14 @@ def main():
         if args.star_name is None is None:
             parser.error("the --basic option requires STAR_NAME to be provided.")
 
-        now_local = datetime.now()
-        time_object = TimeSwitch(now_local, "UTC")
+        basic_calculation(args.star_name)
 
-        star_object = Star(args.star_name, time_object.get_utc())
 
-        print(star_object)
+def basic_calculation(star_name: str):
+    now_local = datetime.now()
+    time_object = TimeSwitch(now_local, "UTC")
 
+    star_object = Star(star_name, time_object.get_utc())
+
+    print(star_object)
 

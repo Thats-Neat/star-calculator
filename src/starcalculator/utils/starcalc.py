@@ -12,30 +12,37 @@ class Star():
         
         self.date_object = dt
         
-        self.sha = self._get_sha()
+        self.ra = self._get_ra()
         self.dec = self._get_dec()
 
     def _star_exists(self):
         return not self.data[self.data["star"] == self.name.lower()].empty
         
-    def _get_sha(self):
-        # need to be using RA and DEC and sha, should convert with function, needs to be SHA for later formulas
-
+    def _get_ra(self):
         search_result = self.data[self.data["star"] == self.name.lower()]
 
-        sha = search_result["sha"].values[0]
-        sha_pm = search_result["sha_pm"].values[0]
-        
+        ra = search_result["ra"].values[0]
+        ra_pm = search_result["ra_pm"].values[0]
+        ra_pm_deg = ra_pm / 3_600_000
         years_since_epoch = self.date_object.year - 2000
-        pm_sha_deg = sha_pm / 3_600_000
 
-        new_sha = (sha + pm_sha_deg * years_since_epoch) % 360
+        adjusted_ra = (ra + ra_pm_deg * years_since_epoch) % 360
 
-        return round(new_sha, 3)
+        return round(adjusted_ra, 2)
+
 
     def _get_dec(self):
-        return 0
+        search_result = self.data[self.data["star"] == self.name.lower()]
+
+        dec = search_result["dec"].values[0]
+        dec_pm = search_result["dec_pm"].values[0]
+        dec_pm_deg = dec_pm / 3_600_000
+        years_since_epoch = self.date_object.year - 2000
+
+        adjusted_dec = dec + dec_pm_deg * years_since_epoch
+
+        return round(adjusted_dec, 2)
     
     def __str__(self):
-        return f"Star: {self.name.upper()}, SHA: {self.sha}, DEC: {self.dec}"
+        return f"Star: {self.name.upper()}, RA: {self.ra}, DEC: {self.dec}"
     
